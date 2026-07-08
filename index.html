@@ -793,11 +793,16 @@ async function ghFetchFile(cfg, token){
   const url = "https://api.github.com/repos/"+encodeURIComponent(cfg.owner)+"/"+encodeURIComponent(cfg.repo)+
     "/contents/"+cfg.path.split("/").map(encodeURIComponent).join("/")+
     "?ref="+encodeURIComponent(cfg.branch||"main")+"&_="+Date.now();
-  const res = await fetch(url, { headers:{ "Authorization":"Bearer "+token, "Accept":"application/vnd.github+json" }});
-  if(!res.ok){ throw new Error("четене ("+res.status+"): "+(await res.text()).slice(0,200)); }
-  const j = await res.json();
-  const text = b64DecodeUnicode(j.content.replace(/\n/g,""));
-  return { sha:j.sha, text };
+  // GitHub's contents API only inlines base64 "content" for files <=1MB; index.html
+  // (with embedded artwork images) is well over that, so content comes back empty.
+  // Fetch metadata (for the sha needed to commit) and raw bytes (works up to 100MB) separately.
+  const metaRes = await fetch(url, { headers:{ "Authorization":"Bearer "+token, "Accept":"application/vnd.github+json" }});
+  if(!metaRes.ok){ throw new Error("четене ("+metaRes.status+"): "+(await metaRes.text()).slice(0,200)); }
+  const meta = await metaRes.json();
+  const rawRes = await fetch(url, { headers:{ "Authorization":"Bearer "+token, "Accept":"application/vnd.github.raw+json" }});
+  if(!rawRes.ok){ throw new Error("четене на съдържание ("+rawRes.status+"): "+(await rawRes.text()).slice(0,200)); }
+  const text = await rawRes.text();
+  return { sha:meta.sha, text };
 }
 
 async function ghCommitFile(cfg, token, newText, sha, message){
