@@ -193,8 +193,13 @@
   .stats{display:flex;gap:48px;margin-top:40px;padding-top:34px;border-top:1px solid var(--line);}
   .about-video{margin-top:48px;padding-top:34px;border-top:1px solid var(--line);}
   .about-video .k{font-size:12.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--soft);margin-bottom:14px;}
-  .about-video .frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--paper);}
-  .about-video .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .about-video .frame{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--ink) center/cover no-repeat;}
+  .about-video .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.25);transition:background .25s;}
+  .about-video .frame:hover .play{background:rgba(0,0,0,0.4);}
+  .about-video .play span{width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,0.95);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.35);transition:transform .25s;}
+  .about-video .frame:hover .play span{transform:scale(1.08);}
+  .about-video .play svg{width:26px;height:26px;margin-left:4px;fill:var(--ink);}
+  .about-video .cap{margin-top:12px;font-size:14px;color:var(--soft);}
   .stats .n{font-family:'Fraunces',serif;font-size:38px;font-weight:400;line-height:1;}
   .stats .l{font-size:13.5px;color:var(--soft);letter-spacing:0.06em;margin-top:6px;}
 
@@ -420,9 +425,10 @@
         </div>
         <div class="about-video">
           <div class="k">Дигитална визитка</div>
-          <div class="frame">
-            <iframe src="https://www.youtube.com/embed/Dky6E9eywPk" title="Дигитална визитка" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-          </div>
+          <a class="frame" href="https://youtu.be/Dky6E9eywPk" target="_blank" rel="noopener" style="background-image:url('https://i.ytimg.com/vi/Dky6E9eywPk/hqdefault.jpg')" aria-label="Гледай видео визитката в YouTube">
+            <span class="play"><span><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span></span>
+          </a>
+          <p class="cap">Golden Time Talent — участие в предаването (гледай в YouTube)</p>
         </div>
       </div>
     </div>
