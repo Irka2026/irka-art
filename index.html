@@ -1147,6 +1147,7 @@ document.getElementById("sendInquiry").onclick = ()=>{
   const body="Име: "+name+"\nИмейл: "+email+"\n\n"+message;
   const emEl = document.querySelector('[data-ed="contact-email"]');
   const toEmail = (emEl && emEl.textContent.trim()) ? emEl.textContent.trim() : CONTACT_EMAIL;
+  if(typeof gtag==="function") gtag("event","generate_lead",{event_category:"inquiry",event_label:subject});
   window.location.href="mailto:"+toEmail+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
 };
 
